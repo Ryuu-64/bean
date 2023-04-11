@@ -7,6 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Component {
-    String name();
+public @interface JBean {
+    String name() default "";
+
+    Scope scope() default Scope.SINGLETON;
 }

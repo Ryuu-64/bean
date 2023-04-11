@@ -1,7 +1,7 @@
 package org.ryuu.rbean.test.A;
 
-import org.ryuu.rbean.Component;
+import org.ryuu.rbean.JBean;
 
-@Component(name = "testService")
+@JBean
 public class TestService {
 }
