@@ -10,5 +10,9 @@ public class BeanDefinition {
 
     @Setter
     @Getter
-    private Scope scope;
+    private ScopeType scopeType;
+
+    @Setter
+    @Getter
+    private LoadingStrategy loadingStrategy;
 }

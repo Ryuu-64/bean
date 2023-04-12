@@ -1,4 +1,4 @@
-package org.ryuu.rbean;
+package org.ryuu.rbean.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,8 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface JBean {
+public @interface Bean {
     String name() default "";
-
-    Scope scope() default Scope.SINGLETON;
 }

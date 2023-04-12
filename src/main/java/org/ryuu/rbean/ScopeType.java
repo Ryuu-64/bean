@@ -1,6 +1,6 @@
 package org.ryuu.rbean;
 
-public enum Scope {
+public enum ScopeType {
     SINGLETON,
     PROTOTYPE
 }
