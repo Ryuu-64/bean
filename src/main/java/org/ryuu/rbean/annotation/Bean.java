@@ -8,5 +8,7 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Bean {
-    String name() default "";
+    String DEFAULT_NAME = "";
+
+    String name() default DEFAULT_NAME;
 }

@@ -1,18 +1,15 @@
 package org.ryuu.rbean;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Setter
+@Getter
+@ToString
+@EqualsAndHashCode
 public class BeanDefinition {
-    @Setter
-    @Getter
     private Class<?> type;
 
-    @Setter
-    @Getter
-    private ScopeType scopeType;
+    private ScopeType scopeType = ScopeType.SINGLETON;
 
-    @Setter
-    @Getter
-    private LoadingStrategy loadingStrategy;
+    private LoadingStrategy loadingStrategy = LoadingStrategy.EAGER;
 }
