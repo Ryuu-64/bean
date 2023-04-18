@@ -52,21 +52,21 @@ class AnnotationBeanFactoryTest {
     }
 
     @Bean
-    static class DefaultBean {
+    public static class DefaultBean {
         public DefaultBean() {
         }
     }
 
     @Bean
     @Scope(scopeType = ScopeType.SINGLETON)
-    static class SingletonBean {
+    public static class SingletonBean {
         public SingletonBean() {
         }
     }
 
     @Bean
     @Scope(scopeType = ScopeType.PROTOTYPE)
-    static class PrototypeBean {
+    public static class PrototypeBean {
         public PrototypeBean() {
         }
     }

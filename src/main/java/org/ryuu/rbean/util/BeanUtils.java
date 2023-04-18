@@ -38,7 +38,12 @@ public class BeanUtils {
 
     public static String getBeanName(Class<?> type) {
         Bean bean = type.getAnnotation(Bean.class);
-        String beanName = bean.name();
+        String beanName;
+        if (bean == null) {
+            beanName = "";
+        } else {
+            beanName = bean.name();
+        }
         if (beanName.equals(Bean.DEFAULT_NAME)) {
             beanName = BeanUtils.getDefaultBeanName(type);
         }
@@ -59,7 +64,7 @@ public class BeanUtils {
         return type.getAnnotation(Loading.class).loadingStrategy();
     }
 
-    private static String getDefaultBeanName(Class<?> type) {
+    public static String getDefaultBeanName(Class<?> type) {
         return Introspector.decapitalize(type.getSimpleName());
     }
 }
