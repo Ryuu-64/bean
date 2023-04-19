@@ -7,18 +7,28 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static org.ryuu.rbean.util.BeanUtils.createBeanDefinition;
 import static org.ryuu.rbean.util.BeanUtils.getBeanName;
 
 public class AnnotationBeanFactory extends AbstractBeanFactory {
     public AnnotationBeanFactory(String packageName) {
+        nameBeanDefinitionMap = new ConcurrentHashMap<>();
+        singletonBeanMap = new ConcurrentHashMap<>();
         Path packagePath = getPackagePath(packageName);
         List<Path> beanClassPaths = getBeanClassPaths(packagePath);
-        createBeanDefinitions(packageName, beanClassPaths);
+        List<Class<?>> beanTypes = getBeanTypes(packageName, beanClassPaths);
+        createBeanDefinitions(beanTypes);
+        createAllEagerSingletonBeans();
+    }
+
+    public AnnotationBeanFactory(Class<?>... types) {
+        nameBeanDefinitionMap = Collections.synchronizedMap(new LinkedHashMap<>());
+        singletonBeanMap = Collections.synchronizedMap(new LinkedHashMap<>());
+        createBeanDefinitions(Arrays.asList(types));
         createAllEagerSingletonBeans();
     }
 
@@ -38,10 +48,16 @@ public class AnnotationBeanFactory extends AbstractBeanFactory {
         }
     }
 
-    private void createBeanDefinitions(String packageName, List<Path> childrenPath) {
+    private List<Class<?>> getBeanTypes(String packageName, List<Path> childrenPath) {
         String firstPackageName = packageName.split("\\.")[0];
-        for (Path path : childrenPath) {
-            Class<?> type = pathToClass(path, firstPackageName);
+        return childrenPath
+                .stream()
+                .map(path -> pathToClass(path, firstPackageName))
+                .collect(Collectors.toList());
+    }
+
+    private void createBeanDefinitions(List<Class<?>> types) {
+        for (Class<?> type : types) {
             if (!type.isAnnotationPresent(Bean.class)) {
                 continue;
             }

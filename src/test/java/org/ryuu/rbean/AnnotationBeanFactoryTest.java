@@ -4,15 +4,42 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ryuu.rbean.annotation.Bean;
 import org.ryuu.rbean.annotation.Scope;
+import org.ryuu.rbean.util.BeanUtils;
+
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnnotationBeanFactoryTest {
     private AnnotationBeanFactory annotationBeanFactory;
 
+    private Class<?>[] beans;
+
     @BeforeEach
     void setUp() {
         annotationBeanFactory = new AnnotationBeanFactory("org.ryuu");
+        beans = new Class[]{
+                DefaultBean.class,
+                SingletonBean.class,
+                PrototypeBean.class
+        };
+    }
+
+    @Test
+    void getBeanDefinitionCount() {
+        int count = new AnnotationBeanFactory(beans).getBeanDefinitionCount();
+        assertEquals(3, count);
+    }
+
+    @Test
+    void getBeanDefinitionNames() {
+        String[] beanDefinitionNames = Arrays
+                .stream(beans)
+                .map(BeanUtils::getBeanName)
+                .toArray(String[]::new);
+        String[] factoryBeanDefinitionNames = new AnnotationBeanFactory(beans).
+                getBeanDefinitionNames();
+        assertArrayEquals(beanDefinitionNames, factoryBeanDefinitionNames);
     }
 
     @Test

@@ -1,15 +1,26 @@
 package org.ryuu.rbean;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import static org.ryuu.rbean.util.BeanUtils.createBean;
 import static org.ryuu.rbean.util.BeanUtils.getBeanName;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
-    protected final ConcurrentHashMap<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
+    protected Map<String, BeanDefinition> nameBeanDefinitionMap;
 
-    protected final ConcurrentHashMap<String, Object> singletonBeanMap = new ConcurrentHashMap<>();
+    protected Map<String, Object> singletonBeanMap;
+
+    @Override
+    public int getBeanDefinitionCount() {
+        return nameBeanDefinitionMap.size();
+    }
+
+    @Override
+    public String[] getBeanDefinitionNames() {
+        return nameBeanDefinitionMap
+                .keySet()
+                .toArray(new String[0]);
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -53,7 +64,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             BeanDefinition definition = entry.getValue();
             if (
                     definition.getScopeType() == ScopeType.SINGLETON &&
-                            definition.getLoadingStrategy() == LoadingStrategy.EAGER
+                    definition.getLoadingStrategy() == LoadingStrategy.EAGER
             ) {
                 Object bean = createBean(definition);
                 singletonBeanMap.put(name, bean);
