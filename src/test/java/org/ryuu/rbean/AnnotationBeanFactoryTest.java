@@ -3,7 +3,9 @@ package org.ryuu.rbean;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ryuu.rbean.annotation.Bean;
+import org.ryuu.rbean.annotation.DependOn;
 import org.ryuu.rbean.annotation.Scope;
+import org.ryuu.rbean.factory.AnnotationBeanFactory;
 import org.ryuu.rbean.util.BeanUtils;
 
 import java.util.Arrays;
@@ -78,6 +80,12 @@ class AnnotationBeanFactoryTest {
         assertNotEquals(bean1, bean2);
     }
 
+    @Test
+    void getDependenciesBean() {
+        DependenciesBean bean = annotationBeanFactory.getBean(DependenciesBean.class);
+        System.out.println(bean);
+    }
+
     @Bean
     public static class DefaultBean {
         public DefaultBean() {
@@ -95,6 +103,13 @@ class AnnotationBeanFactoryTest {
     @Scope(scopeType = ScopeType.PROTOTYPE)
     public static class PrototypeBean {
         public PrototypeBean() {
+        }
+    }
+
+    @Bean
+    @DependOn(dependencies = {"defaultBean"})
+    public static class DependenciesBean {
+        public DependenciesBean() {
         }
     }
 }

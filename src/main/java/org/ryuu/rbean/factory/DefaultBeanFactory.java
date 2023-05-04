@@ -1,15 +1,13 @@
-package org.ryuu.rbean;
+package org.ryuu.rbean.factory;
 
-import java.util.Collections;
-import java.util.LinkedHashMap;
+import org.ryuu.rbean.BeanDefinition;
+
 import java.util.Map;
 
 
 public class DefaultBeanFactory extends AbstractBeanFactory {
     public DefaultBeanFactory(Map<String, BeanDefinition> nameBeanDefinitionMap) {
-        this.nameBeanDefinitionMap = Collections.synchronizedMap(new LinkedHashMap<>());
         this.nameBeanDefinitionMap.putAll(nameBeanDefinitionMap);
-        singletonBeanMap = Collections.synchronizedMap(new LinkedHashMap<>());
         createAllEagerSingletonBeans();
     }
 }

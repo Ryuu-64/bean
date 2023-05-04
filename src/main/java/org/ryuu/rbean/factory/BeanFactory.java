@@ -1,4 +1,4 @@
-package org.ryuu.rbean;
+package org.ryuu.rbean.factory;
 
 public interface BeanFactory {
     int getBeanDefinitionCount();

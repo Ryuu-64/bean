@@ -1,14 +1,20 @@
-package org.ryuu.rbean;
+package org.ryuu.rbean.factory;
 
-import java.util.Map;
+import org.ryuu.rbean.BeanDefinition;
+import org.ryuu.rbean.LoadingStrategy;
+import org.ryuu.rbean.ScopeType;
+import org.ryuu.rbean.util.DirectedAcyclicGraphUtils;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.ryuu.rbean.util.BeanUtils.createBean;
 import static org.ryuu.rbean.util.BeanUtils.getBeanName;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
-    protected Map<String, BeanDefinition> nameBeanDefinitionMap;
+    protected final Map<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
 
-    protected Map<String, Object> singletonBeanMap;
+    protected final Map<String, Object> singletonBeanMap = new ConcurrentHashMap<>();
 
     @Override
     public int getBeanDefinitionCount() {
@@ -17,9 +23,8 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
     @Override
     public String[] getBeanDefinitionNames() {
-        return nameBeanDefinitionMap
-                .keySet()
-                .toArray(new String[0]);
+        Set<String> keySet = nameBeanDefinitionMap.keySet();
+        return keySet.toArray(new String[0]);
     }
 
     @SuppressWarnings("unchecked")
@@ -59,9 +64,21 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected void createAllEagerSingletonBeans() {
+        Map<String, List<String>> names = new HashMap<>();
         for (Map.Entry<String, BeanDefinition> entry : nameBeanDefinitionMap.entrySet()) {
-            String name = entry.getKey();
-            BeanDefinition definition = entry.getValue();
+            String key = entry.getKey();
+            BeanDefinition beanDefinition = entry.getValue();
+            if (beanDefinition.getScopeType() == ScopeType.PROTOTYPE) {
+                continue;
+            }
+            names.put(key, beanDefinition.getDependencies());
+        }
+
+        List<String> sortedNames = DirectedAcyclicGraphUtils.topologicalSort(names);
+        Collections.reverse(sortedNames);
+
+        for (String name : sortedNames) {
+            BeanDefinition definition = nameBeanDefinitionMap.get(name);
             if (
                     definition.getScopeType() == ScopeType.SINGLETON &&
                     definition.getLoadingStrategy() == LoadingStrategy.EAGER

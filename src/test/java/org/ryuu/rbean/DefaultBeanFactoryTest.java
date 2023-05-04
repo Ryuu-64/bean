@@ -2,8 +2,10 @@ package org.ryuu.rbean;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.ryuu.rbean.factory.DefaultBeanFactory;
 import org.ryuu.rbean.util.BeanUtils;
 
+import java.util.Collections;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -14,7 +16,13 @@ class DefaultBeanFactoryTest {
     @BeforeEach
     void setUp() {
         ConcurrentHashMap<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
-        nameBeanDefinitionMap.put(BeanUtils.getDefaultBeanName(DefaultBean.class), new BeanDefinition(DefaultBean.class));
+        nameBeanDefinitionMap.put(
+                BeanUtils.getDefaultBeanName(DefaultBean.class),
+                new BeanDefinition(
+                        DefaultBean.class, ScopeType.SINGLETON,
+                        LoadingStrategy.EAGER, Collections.singletonList("defaultBean")
+                )
+        );
         defaultBeanFactory = new DefaultBeanFactory(nameBeanDefinitionMap);
     }
 

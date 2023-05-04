@@ -1,5 +1,6 @@
-package org.ryuu.rbean;
+package org.ryuu.rbean.factory;
 
+import org.ryuu.rbean.BeanDefinition;
 import org.ryuu.rbean.annotation.Bean;
 import org.ryuu.rbean.util.PathUtils;
 
@@ -7,8 +8,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.ryuu.rbean.util.BeanUtils.createBeanDefinition;
@@ -16,8 +19,6 @@ import static org.ryuu.rbean.util.BeanUtils.getBeanName;
 
 public class AnnotationBeanFactory extends AbstractBeanFactory {
     public AnnotationBeanFactory(String packageName) {
-        nameBeanDefinitionMap = new ConcurrentHashMap<>();
-        singletonBeanMap = new ConcurrentHashMap<>();
         Path packagePath = getPackagePath(packageName);
         List<Path> beanClassPaths = getBeanClassPaths(packagePath);
         List<Class<?>> beanTypes = getBeanTypes(packageName, beanClassPaths);
@@ -26,8 +27,6 @@ public class AnnotationBeanFactory extends AbstractBeanFactory {
     }
 
     public AnnotationBeanFactory(Class<?>... types) {
-        nameBeanDefinitionMap = Collections.synchronizedMap(new LinkedHashMap<>());
-        singletonBeanMap = Collections.synchronizedMap(new LinkedHashMap<>());
         createBeanDefinitions(Arrays.asList(types));
         createAllEagerSingletonBeans();
     }

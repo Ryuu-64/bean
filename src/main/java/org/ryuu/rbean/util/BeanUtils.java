@@ -4,11 +4,13 @@ import org.ryuu.rbean.BeanDefinition;
 import org.ryuu.rbean.LoadingStrategy;
 import org.ryuu.rbean.ScopeType;
 import org.ryuu.rbean.annotation.Bean;
+import org.ryuu.rbean.annotation.DependOn;
 import org.ryuu.rbean.annotation.Loading;
 import org.ryuu.rbean.annotation.Scope;
 
 import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 
 public class BeanUtils {
     private BeanUtils() {
@@ -19,6 +21,7 @@ public class BeanUtils {
         beanDefinition.setType(type);
         beanDefinition.setScopeType(getScopeType(type));
         beanDefinition.setLoadingStrategy(getLoadingStrategy(type));
+        beanDefinition.setDependencies(Arrays.asList(getDependencies(type)));
         return beanDefinition;
     }
 
@@ -32,7 +35,7 @@ public class BeanUtils {
                 InvocationTargetException |
                 NoSuchMethodException e
         ) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Create bean failed.", e);
         }
     }
 
@@ -50,21 +53,28 @@ public class BeanUtils {
         return beanName;
     }
 
-    public static ScopeType getScopeType(Class<?> type) {
+    public static String getDefaultBeanName(Class<?> type) {
+        return Introspector.decapitalize(type.getSimpleName());
+    }
+
+    private static ScopeType getScopeType(Class<?> type) {
         if (!type.isAnnotationPresent(Scope.class)) {
             return ScopeType.SINGLETON;
         }
         return type.getAnnotation(Scope.class).scopeType();
     }
 
-    public static LoadingStrategy getLoadingStrategy(Class<?> type) {
+    private static LoadingStrategy getLoadingStrategy(Class<?> type) {
         if (!type.isAnnotationPresent(Loading.class)) {
             return LoadingStrategy.EAGER;
         }
         return type.getAnnotation(Loading.class).loadingStrategy();
     }
 
-    public static String getDefaultBeanName(Class<?> type) {
-        return Introspector.decapitalize(type.getSimpleName());
+    private static String[] getDependencies(Class<?> type) {
+        if (!type.isAnnotationPresent(DependOn.class)) {
+            return new String[0];
+        }
+        return type.getAnnotation(DependOn.class).dependencies();
     }
 }
