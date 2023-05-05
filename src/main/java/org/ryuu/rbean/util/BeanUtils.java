@@ -3,10 +3,7 @@ package org.ryuu.rbean.util;
 import org.ryuu.rbean.BeanDefinition;
 import org.ryuu.rbean.LoadingStrategy;
 import org.ryuu.rbean.ScopeType;
-import org.ryuu.rbean.annotation.Bean;
-import org.ryuu.rbean.annotation.DependOn;
-import org.ryuu.rbean.annotation.Loading;
-import org.ryuu.rbean.annotation.Scope;
+import org.ryuu.rbean.Bean;
 
 import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
@@ -58,23 +55,23 @@ public class BeanUtils {
     }
 
     private static ScopeType getScopeType(Class<?> type) {
-        if (!type.isAnnotationPresent(Scope.class)) {
+        if (!type.isAnnotationPresent(Bean.Scope.class)) {
             return ScopeType.SINGLETON;
         }
-        return type.getAnnotation(Scope.class).scopeType();
+        return type.getAnnotation(Bean.Scope.class).scopeType();
     }
 
     private static LoadingStrategy getLoadingStrategy(Class<?> type) {
-        if (!type.isAnnotationPresent(Loading.class)) {
+        if (!type.isAnnotationPresent(Bean.Loading.class)) {
             return LoadingStrategy.EAGER;
         }
-        return type.getAnnotation(Loading.class).loadingStrategy();
+        return type.getAnnotation(Bean.Loading.class).loadingStrategy();
     }
 
     private static String[] getDependencies(Class<?> type) {
-        if (!type.isAnnotationPresent(DependOn.class)) {
+        if (!type.isAnnotationPresent(Bean.DependOn.class)) {
             return new String[0];
         }
-        return type.getAnnotation(DependOn.class).dependencies();
+        return type.getAnnotation(Bean.DependOn.class).dependencies();
     }
 }

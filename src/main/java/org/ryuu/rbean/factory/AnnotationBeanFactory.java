@@ -1,7 +1,7 @@
 package org.ryuu.rbean.factory;
 
 import org.ryuu.rbean.BeanDefinition;
-import org.ryuu.rbean.annotation.Bean;
+import org.ryuu.rbean.Bean;
 import org.ryuu.rbean.util.PathUtils;
 
 import java.io.File;

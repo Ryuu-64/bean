@@ -2,9 +2,6 @@ package org.ryuu.rbean;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.ryuu.rbean.annotation.Bean;
-import org.ryuu.rbean.annotation.DependOn;
-import org.ryuu.rbean.annotation.Scope;
 import org.ryuu.rbean.factory.AnnotationBeanFactory;
 import org.ryuu.rbean.util.BeanUtils;
 
@@ -87,27 +84,44 @@ class AnnotationBeanFactoryTest {
     }
 
     @Bean
+//    @Bean.DependOn(dependencies = {"dependenciesBean"})
     public static class DefaultBean {
         public DefaultBean() {
         }
     }
 
     @Bean
-    @Scope(scopeType = ScopeType.SINGLETON)
+    @Bean.Scope(scopeType = ScopeType.SINGLETON)
     public static class SingletonBean {
         public SingletonBean() {
         }
     }
 
     @Bean
-    @Scope(scopeType = ScopeType.PROTOTYPE)
+    @Bean.Scope(scopeType = ScopeType.SINGLETON)
+    @Bean.Loading(loadingStrategy = LoadingStrategy.EAGER)
+    public static class EagerSingletonBean {
+        public EagerSingletonBean() {
+        }
+    }
+
+    @Bean
+    @Bean.Scope(scopeType = ScopeType.SINGLETON)
+    @Bean.Loading(loadingStrategy = LoadingStrategy.LAZY)
+    public static class LazySingletonBean {
+        public LazySingletonBean() {
+        }
+    }
+
+    @Bean
+    @Bean.Scope(scopeType = ScopeType.PROTOTYPE)
     public static class PrototypeBean {
         public PrototypeBean() {
         }
     }
 
     @Bean
-    @DependOn(dependencies = {"defaultBean"})
+    @Bean.DependOn(dependencies = {"defaultBean"})
     public static class DependenciesBean {
         public DependenciesBean() {
         }

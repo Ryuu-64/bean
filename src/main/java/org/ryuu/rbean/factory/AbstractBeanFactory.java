@@ -71,10 +71,21 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             if (beanDefinition.getScopeType() == ScopeType.PROTOTYPE) {
                 continue;
             }
-            names.put(key, beanDefinition.getDependencies());
+
+            if (beanDefinition.getLoadingStrategy() == LoadingStrategy.LAZY) {
+                continue;
+            }
+
+            List<String> dependencies = beanDefinition.getDependencies();
+            if (dependencies.size() == 0) {
+                continue;
+            }
+
+            names.put(key, dependencies);
         }
 
         List<String> sortedNames = DirectedAcyclicGraphUtils.topologicalSort(names);
+
         Collections.reverse(sortedNames);
 
         for (String name : sortedNames) {

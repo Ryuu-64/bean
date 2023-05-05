@@ -6,7 +6,8 @@ import org.ryuu.rbean.factory.DefaultBeanFactory;
 import org.ryuu.rbean.util.BeanUtils;
 
 import java.util.Collections;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -15,13 +16,13 @@ class DefaultBeanFactoryTest {
 
     @BeforeEach
     void setUp() {
-        ConcurrentHashMap<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
+        Map<String, BeanDefinition> nameBeanDefinitionMap = new HashMap<>();
         nameBeanDefinitionMap.put(
                 BeanUtils.getDefaultBeanName(DefaultBean.class),
-                new BeanDefinition(
-                        DefaultBean.class, ScopeType.SINGLETON,
-                        LoadingStrategy.EAGER, Collections.singletonList("defaultBean")
-                )
+                BeanDefinition.builder()
+                        .type(DefaultBean.class)
+                        .dependencies(Collections.singletonList("defaultBean"))
+                        .build()
         );
         defaultBeanFactory = new DefaultBeanFactory(nameBeanDefinitionMap);
     }

@@ -3,36 +3,37 @@ package org.ryuu.rbean.util;
 import java.util.*;
 
 public class DirectedAcyclicGraphUtils {
-    public static List<String> topologicalSort(Map<String, List<String>> dependencies) {
-        Map<String, Integer> inDegree = new HashMap<>();
-        for (String beanName : dependencies.keySet()) {
-            inDegree.put(beanName, 0);
+    public static <T> List<T> topologicalSort(Map<T, List<T>> dependencies) {
+        Map<T, Integer> inDegree = new HashMap<>();
+        for (T vertex : dependencies.keySet()) {
+            inDegree.put(vertex, 0);
         }
-        for (List<String> dependenciesList : dependencies.values()) {
-            for (String dependency : dependenciesList) {
-                inDegree.put(dependency, getOrDefault(inDegree, dependency, 0) + 1);
+        for (List<T> vertexes : dependencies.values()) {
+            for (T vertex : vertexes) {
+                inDegree.put(vertex, getOrDefault(inDegree, vertex, 0) + 1);
             }
         }
-        Queue<String> queue = new LinkedList<>();
-        for (String beanName : dependencies.keySet()) {
-            if (getOrDefault(inDegree, beanName, 0) == 0) {
-                queue.offer(beanName);
+        Queue<T> queue = new LinkedList<>();
+        for (T vertexes : dependencies.keySet()) {
+            if (getOrDefault(inDegree, vertexes, 0) == 0) {
+                queue.offer(vertexes);
             }
         }
-        List<String> result = new ArrayList<>();
+        List<T> result = new ArrayList<>();
         while (!queue.isEmpty()) {
-            String beanName = queue.poll();
-            result.add(beanName);
-            List<String> dependsOn = dependencies.get(beanName);
-            if (dependsOn != null) {
-                for (String dependency : dependsOn) {
-                    inDegree.put(dependency, inDegree.get(dependency) - 1);
-                    if (inDegree.get(dependency) == 0) {
-                        queue.offer(dependency);
+            T vertex = queue.poll();
+            result.add(vertex);
+            List<T> targetVertexes = dependencies.get(vertex);
+            if (targetVertexes != null) {
+                for (T targetVertex : targetVertexes) {
+                    inDegree.put(targetVertex, inDegree.get(targetVertex) - 1);
+                    if (inDegree.get(targetVertex) == 0) {
+                        queue.offer(targetVertex);
                     }
                 }
             }
         }
+
         return result;
     }
 
