@@ -1,9 +1,11 @@
-package org.ryuu.rbean;
+package org.ryuu.bean.factory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.ryuu.rbean.factory.AnnotationBeanFactory;
-import org.ryuu.rbean.util.BeanUtils;
+import org.ryuu.bean.Bean;
+import org.ryuu.bean.LoadingStrategy;
+import org.ryuu.bean.ScopeType;
+import org.ryuu.bean.util.BeanUtils;
 
 import java.util.Arrays;
 

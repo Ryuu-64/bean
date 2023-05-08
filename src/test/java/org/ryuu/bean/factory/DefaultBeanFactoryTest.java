@@ -1,9 +1,9 @@
-package org.ryuu.rbean;
+package org.ryuu.bean.factory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.ryuu.rbean.factory.DefaultBeanFactory;
-import org.ryuu.rbean.util.BeanUtils;
+import org.ryuu.bean.BeanDefinition;
+import org.ryuu.bean.util.BeanUtils;
 
 import java.util.Collections;
 import java.util.HashMap;

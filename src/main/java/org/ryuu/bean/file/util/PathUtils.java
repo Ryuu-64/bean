@@ -1,4 +1,4 @@
-package org.ryuu.rbean.util;
+package org.ryuu.bean.file.util;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

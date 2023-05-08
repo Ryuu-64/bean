@@ -1,4 +1,4 @@
-package org.ryuu.rbean;
+package org.ryuu.bean;
 
 public enum LoadingStrategy {
     LAZY,

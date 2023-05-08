@@ -1,6 +1,6 @@
-package org.ryuu.rbean.factory;
+package org.ryuu.bean.factory;
 
-import org.ryuu.rbean.BeanDefinition;
+import org.ryuu.bean.BeanDefinition;
 
 import java.util.Map;
 

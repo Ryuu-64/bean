@@ -1,8 +1,8 @@
-package org.ryuu.rbean.factory;
+package org.ryuu.bean.factory;
 
-import org.ryuu.rbean.BeanDefinition;
-import org.ryuu.rbean.Bean;
-import org.ryuu.rbean.util.PathUtils;
+import org.ryuu.bean.BeanDefinition;
+import org.ryuu.bean.Bean;
+import org.ryuu.bean.file.util.PathUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.ryuu.rbean.util.BeanUtils.createBeanDefinition;
-import static org.ryuu.rbean.util.BeanUtils.getBeanName;
+import static org.ryuu.bean.util.BeanUtils.createBeanDefinition;
+import static org.ryuu.bean.util.BeanUtils.getBeanName;
 
 public class AnnotationBeanFactory extends AbstractBeanFactory {
     public AnnotationBeanFactory(String packageName) {

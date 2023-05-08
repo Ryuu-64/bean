@@ -1,9 +1,9 @@
-package org.ryuu.rbean.util;
+package org.ryuu.bean.util;
 
-import org.ryuu.rbean.BeanDefinition;
-import org.ryuu.rbean.LoadingStrategy;
-import org.ryuu.rbean.ScopeType;
-import org.ryuu.rbean.Bean;
+import org.ryuu.bean.BeanDefinition;
+import org.ryuu.bean.LoadingStrategy;
+import org.ryuu.bean.ScopeType;
+import org.ryuu.bean.Bean;
 
 import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;

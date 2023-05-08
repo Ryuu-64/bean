@@ -1,15 +1,15 @@
-package org.ryuu.rbean.factory;
+package org.ryuu.bean.factory;
 
-import org.ryuu.rbean.BeanDefinition;
-import org.ryuu.rbean.LoadingStrategy;
-import org.ryuu.rbean.ScopeType;
-import org.ryuu.rbean.util.DirectedAcyclicGraphUtils;
+import org.ryuu.bean.BeanDefinition;
+import org.ryuu.bean.LoadingStrategy;
+import org.ryuu.bean.ScopeType;
+import org.ryuu.bean.math.util.DirectedAcyclicGraphUtils;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.ryuu.rbean.util.BeanUtils.createBean;
-import static org.ryuu.rbean.util.BeanUtils.getBeanName;
+import static org.ryuu.bean.util.BeanUtils.createBean;
+import static org.ryuu.bean.util.BeanUtils.getBeanName;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
     protected final Map<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
@@ -84,7 +84,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             names.put(key, dependencies);
         }
 
-        List<String> sortedNames = DirectedAcyclicGraphUtils.topologicalSort(names);
+        List<String> sortedNames = DirectedAcyclicGraphUtils.kahnTopologicalSort(names);
 
         Collections.reverse(sortedNames);
 

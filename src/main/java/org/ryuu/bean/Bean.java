@@ -1,4 +1,4 @@
-package org.ryuu.rbean;
+package org.ryuu.bean;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
