@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.ryuu.bean.BeanDefinition;
 import org.ryuu.bean.util.BeanUtils;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +20,6 @@ class DefaultBeanFactoryTest {
                 BeanUtils.getDefaultBeanName(DefaultBean.class),
                 BeanDefinition.builder()
                         .type(DefaultBean.class)
-                        .dependencies(Collections.singletonList("defaultBean"))
                         .build()
         );
         defaultBeanFactory = new DefaultBeanFactory(nameBeanDefinitionMap);

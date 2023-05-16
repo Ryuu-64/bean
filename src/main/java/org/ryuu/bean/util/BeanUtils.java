@@ -14,12 +14,13 @@ public class BeanUtils {
     }
 
     public static BeanDefinition createBeanDefinition(Class<?> type) {
-        BeanDefinition beanDefinition = new BeanDefinition();
-        beanDefinition.setType(type);
-        beanDefinition.setScopeType(getScopeType(type));
-        beanDefinition.setLoadingStrategy(getLoadingStrategy(type));
-        beanDefinition.setDependencies(Arrays.asList(getDependencies(type)));
-        return beanDefinition;
+        return BeanDefinition
+                .builder()
+                .type(type)
+                .scopeType(getScopeType(type))
+                .loadingStrategy(getLoadingStrategy(type))
+                .dependencies(Arrays.asList(getDependencies(type)))
+                .build();
     }
 
     public static Object createBean(BeanDefinition definition) {

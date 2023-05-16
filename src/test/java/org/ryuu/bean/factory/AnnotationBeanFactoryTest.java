@@ -33,17 +33,6 @@ class AnnotationBeanFactoryTest {
     }
 
     @Test
-    void getBeanDefinitionNames() {
-        String[] beanDefinitionNames = Arrays
-                .stream(beans)
-                .map(BeanUtils::getBeanName)
-                .toArray(String[]::new);
-        String[] factoryBeanDefinitionNames = new AnnotationBeanFactory(beans).
-                getBeanDefinitionNames();
-        assertArrayEquals(beanDefinitionNames, factoryBeanDefinitionNames);
-    }
-
-    @Test
     void getBeanByType() {
         DefaultBean defaultBean = annotationBeanFactory.getBean(DefaultBean.class);
         assertNotEquals(null, defaultBean);

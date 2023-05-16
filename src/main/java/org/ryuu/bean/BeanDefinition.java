@@ -2,20 +2,25 @@ package org.ryuu.bean;
 
 import lombok.*;
 
+import java.util.Collections;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 public class BeanDefinition {
+    @NonNull
     private Class<?> type;
 
     @Builder.Default
+    @NonNull
     private ScopeType scopeType = ScopeType.SINGLETON;
 
     @Builder.Default
+    @NonNull
     private LoadingStrategy loadingStrategy = LoadingStrategy.EAGER;
 
-    private List<String> dependencies;
+    @Builder.Default
+    @NonNull
+    private List<String> dependencies = Collections.emptyList();
 }

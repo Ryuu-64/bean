@@ -16,6 +16,10 @@ public class DirectedAcyclicGraphUtils {
             inDegree.put(vertex, 0);
         }
         for (List<T> targetVertexes : graph.values()) {
+            if (targetVertexes == null) {
+                continue;
+            }
+
             for (T targetVertex : targetVertexes) {
                 inDegree.put(targetVertex, MapUtils.getOrDefault(inDegree, targetVertex, 0) + 1);
             }
@@ -63,7 +67,11 @@ public class DirectedAcyclicGraphUtils {
         HashSet<T> vertexesSet = new HashSet<>();
         for (Map.Entry<T, List<T>> entry : graph.entrySet()) {
             vertexesSet.add(entry.getKey());
-            vertexesSet.addAll(entry.getValue());
+            List<T> value = entry.getValue();
+            if (value == null) {
+                continue;
+            }
+            vertexesSet.addAll(value);
         }
 
         return vertexesSet.size();

@@ -76,12 +76,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
                 continue;
             }
 
-            List<String> dependencies = beanDefinition.getDependencies();
-            if (dependencies.size() == 0) {
-                continue;
-            }
-
-            names.put(key, dependencies);
+            names.put(key, beanDefinition.getDependencies());
         }
 
         List<String> sortedNames = DirectedAcyclicGraphUtils.kahnTopologicalSort(names);
