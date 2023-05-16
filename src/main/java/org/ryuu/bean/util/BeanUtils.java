@@ -4,8 +4,8 @@ import org.ryuu.bean.BeanDefinition;
 import org.ryuu.bean.LoadingStrategy;
 import org.ryuu.bean.ScopeType;
 import org.ryuu.bean.Bean;
+import org.ryuu.bean.string.util.StringUtils;
 
-import java.beans.Introspector;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
@@ -51,8 +51,11 @@ public class BeanUtils {
         return beanName;
     }
 
+    /**
+     * Unable to use {@link java.beans.Introspector#decapitalize(String)}, as it is not available in Android.
+     */
     public static String getDefaultBeanName(Class<?> type) {
-        return Introspector.decapitalize(type.getSimpleName());
+        return StringUtils.decapitalize(type.getSimpleName());
     }
 
     private static ScopeType getScopeType(Class<?> type) {
