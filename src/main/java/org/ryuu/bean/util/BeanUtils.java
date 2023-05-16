@@ -52,7 +52,7 @@ public class BeanUtils {
     }
 
     /**
-     * Unable to use {@link java.beans.Introspector#decapitalize(String)}, as it is not available in Android.
+     * Unable to use java.beans.Introspector#decapitalize(String), as it is not available in Android.
      */
     public static String getDefaultBeanName(Class<?> type) {
         return StringUtils.decapitalize(type.getSimpleName());
