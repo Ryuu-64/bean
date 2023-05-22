@@ -5,9 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.ryuu.bean.Bean;
 import org.ryuu.bean.LoadingStrategy;
 import org.ryuu.bean.ScopeType;
-import org.ryuu.bean.util.BeanUtils;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,8 +71,19 @@ class AnnotationBeanFactoryTest {
         System.out.println(bean);
     }
 
+    @Test
+    void classWithoutBeanAnnotation() {
+        ClassWithoutBeanAnnotation bean = annotationBeanFactory.getBean(ClassWithoutBeanAnnotation.class);
+        assertNull(bean);
+    }
+
+    @Test
+    void getMethodBean() {
+        String bean = annotationBeanFactory.getBean("testBean", String.class);
+        assertEquals(MethodBeanHolder.testBean, bean);
+    }
+
     @Bean
-//    @Bean.DependOn(dependencies = {"dependenciesBean"})
     public static class DefaultBean {
         public DefaultBean() {
         }
@@ -115,6 +123,25 @@ class AnnotationBeanFactoryTest {
     @Bean.DependOn(dependencies = {"defaultBean"})
     public static class DependenciesBean {
         public DependenciesBean() {
+        }
+    }
+
+    public static class ClassWithoutBeanAnnotation {
+        public ClassWithoutBeanAnnotation() {
+        }
+    }
+
+    @Bean
+    public static class MethodBeanHolder {
+        public static final String testBean = "bean in method bean holder";
+
+        public MethodBeanHolder() {
+        }
+
+        @SuppressWarnings("unused")
+        @Bean
+        public String testBean() {
+            return testBean;
         }
     }
 }

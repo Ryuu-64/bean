@@ -6,6 +6,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class BeanDefinitionTest {
     @Test
+    void build() {
+        BeanDefinition beanDefinition = BeanDefinition
+                .builder()
+                .name("build")
+                .type(Object.class)
+                .build();
+        System.out.println(beanDefinition.toString());
+    }
+
+    @Test
     void nullType() {
         try {
             BeanDefinition.builder().build();

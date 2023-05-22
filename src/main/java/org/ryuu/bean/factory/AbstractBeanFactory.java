@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static org.ryuu.bean.util.BeanUtils.createBean;
-import static org.ryuu.bean.util.BeanUtils.getBeanName;
+import static org.ryuu.bean.util.BeanUtils.TypeBean.getBeanName;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
     protected final Map<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
@@ -30,9 +30,13 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T getBean(String beanName, Class<T> type) {
+        if (beanName == null) {
+            return null;
+        }
+
         BeanDefinition beanDefinition = nameBeanDefinitionMap.get(beanName);
         if (beanDefinition == null) {
-            throw new IllegalStateException("Unexpected value: " + beanName);
+            return null;
         }
 
         Object bean;
@@ -40,22 +44,18 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             case SINGLETON:
                 bean = singletonBeanMap.get(beanName);
                 if (bean == null) {
-                    bean = createBean(beanDefinition);
-                    String name = getBeanName(beanDefinition.getType());
-                    singletonBeanMap.put(name, bean);
+                    bean = createBean(beanDefinition, this);
+                    singletonBeanMap.put(beanDefinition.getName(), bean);
                 }
                 break;
             case PROTOTYPE:
-                bean = createBean(beanDefinition);
+                bean = createBean(beanDefinition, this);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + beanDefinition.getScopeType());
         }
-        if (bean.getClass().equals(type)) {
-            return (T) bean;
-        }
 
-        throw new IllegalStateException("Unexpected value: " + type);
+        return (T) bean;
     }
 
     @Override
@@ -87,9 +87,9 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             BeanDefinition definition = nameBeanDefinitionMap.get(name);
             if (
                     definition.getScopeType() == ScopeType.SINGLETON &&
-                    definition.getLoadingStrategy() == LoadingStrategy.EAGER
+                            definition.getLoadingStrategy() == LoadingStrategy.EAGER
             ) {
-                Object bean = createBean(definition);
+                Object bean = createBean(definition, this);
                 singletonBeanMap.put(name, bean);
             }
         }
