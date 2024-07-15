@@ -2,7 +2,7 @@ package org.ryuu.bean.factory;
 
 import org.ryuu.bean.BeanDefinition;
 import org.ryuu.bean.file.util.PathUtils;
-import org.ryuu.bean.util.BeanUtils;
+import org.ryuu.bean.util.Beans;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class AnnotationBeanFactory extends AbstractBeanFactory {
 
     private void createBeanDefinitions(List<Class<?>> types) {
         for (Class<?> type : types) {
-            List<BeanDefinition> beanDefinitions = BeanUtils.createBeanDefinitions(type);
+            List<BeanDefinition> beanDefinitions = Beans.createBeanDefinitions(type);
             for (BeanDefinition beanDefinition : beanDefinitions) {
                 nameBeanDefinitionMap.put(beanDefinition.getName(), beanDefinition);
             }

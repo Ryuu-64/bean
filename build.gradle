@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.ryuu'
-version = '1.0.0'
+version = '2.0.0'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
@@ -16,13 +16,13 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    compileOnly 'org.projectlombok:lombok:1.18.26'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.11.0-M2'
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.0-M2'
 }
 
 test {

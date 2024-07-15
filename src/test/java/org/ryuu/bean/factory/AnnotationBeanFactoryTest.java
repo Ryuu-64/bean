@@ -11,21 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class AnnotationBeanFactoryTest {
     private AnnotationBeanFactory annotationBeanFactory;
 
-    private Class<?>[] beans;
-
     @BeforeEach
     void setUp() {
         annotationBeanFactory = new AnnotationBeanFactory("org.ryuu");
-        beans = new Class[]{
-                DefaultBean.class,
-                SingletonBean.class,
-                PrototypeBean.class
-        };
     }
 
     @Test
     void getBeanDefinitionCount() {
-        int count = new AnnotationBeanFactory(beans).getBeanDefinitionCount();
+        int count = new AnnotationBeanFactory(DefaultBean.class, SingletonBean.class, PrototypeBean.class)
+                .getBeanDefinitionCount();
         assertEquals(3, count);
     }
 
@@ -73,8 +67,13 @@ class AnnotationBeanFactoryTest {
 
     @Test
     void classWithoutBeanAnnotation() {
-        ClassWithoutBeanAnnotation bean = annotationBeanFactory.getBean(ClassWithoutBeanAnnotation.class);
+        AnnotationBeanFactory beanFactory = new AnnotationBeanFactory(ClassWithoutBeanAnnotation.class);
+
+        ClassWithoutBeanAnnotation bean = beanFactory.getBean(ClassWithoutBeanAnnotation.class);
         assertNull(bean);
+
+        String methodBean = beanFactory.getBean("testBeanClassWithoutBeanAnnotation", String.class);
+        assertNull(methodBean);
     }
 
     @Test
@@ -127,7 +126,10 @@ class AnnotationBeanFactoryTest {
     }
 
     public static class ClassWithoutBeanAnnotation {
-        public ClassWithoutBeanAnnotation() {
+        @SuppressWarnings("unused")
+        @Bean
+        public String testBeanClassWithoutBeanAnnotation() {
+            return "testBeanClassWithoutBeanAnnotation";
         }
     }
 

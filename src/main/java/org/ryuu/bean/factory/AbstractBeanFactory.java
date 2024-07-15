@@ -4,12 +4,11 @@ import org.ryuu.bean.BeanDefinition;
 import org.ryuu.bean.LoadingStrategy;
 import org.ryuu.bean.ScopeType;
 import org.ryuu.bean.math.util.DirectedAcyclicGraphUtils;
+import org.ryuu.bean.util.Beans;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static org.ryuu.bean.util.BeanUtils.createBean;
-import static org.ryuu.bean.util.BeanUtils.TypeBean.getBeanName;
 
 public abstract class AbstractBeanFactory implements BeanFactory {
     protected final Map<String, BeanDefinition> nameBeanDefinitionMap = new ConcurrentHashMap<>();
@@ -44,23 +43,23 @@ public abstract class AbstractBeanFactory implements BeanFactory {
             case SINGLETON:
                 bean = singletonBeanMap.get(beanName);
                 if (bean == null) {
-                    bean = createBean(beanDefinition, this);
+                    bean = Beans.create(beanDefinition, this);
                     singletonBeanMap.put(beanDefinition.getName(), bean);
                 }
-                break;
+                return (T) bean;
             case PROTOTYPE:
-                bean = createBean(beanDefinition, this);
-                break;
+                bean = Beans.create(beanDefinition, this);
+                return (T) bean;
             default:
                 throw new IllegalStateException("Unexpected value: " + beanDefinition.getScopeType());
         }
 
-        return (T) bean;
     }
 
     @Override
     public <T> T getBean(Class<T> type) {
-        return getBean(getBeanName(type), type);
+        Optional<String> optionalName = Beans.TypeBeans.getBeanName(type);
+        return optionalName.map(name -> getBean(name, type)).orElse(null);
     }
 
     protected void createAllEagerSingletonBeans() {
@@ -89,7 +88,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
                     definition.getScopeType() == ScopeType.SINGLETON &&
                             definition.getLoadingStrategy() == LoadingStrategy.EAGER
             ) {
-                Object bean = createBean(definition, this);
+                Object bean = Beans.create(definition, this);
                 singletonBeanMap.put(name, bean);
             }
         }
